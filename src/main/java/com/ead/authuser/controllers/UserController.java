@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class UserController {
     @PutMapping("{userId}")
     public ResponseEntity<Object> updateUser(@PathVariable UUID userId,
                                              @RequestBody @JsonView(UserRecordDTO.UserView.UserPut.class)
+                                             @Validated(UserRecordDTO.UserView.UserPut.class)
                                              UserRecordDTO userRecordDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userRecordDTO, userService.findById(userId).get()));
     }
@@ -46,6 +48,7 @@ public class UserController {
     @PutMapping("{userId}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable UUID userId,
                                                  @RequestBody @JsonView(UserRecordDTO.UserView.PasswordPut.class)
+                                                 @Validated(UserRecordDTO.UserView.PasswordPut.class)
                                                  UserRecordDTO userRecordDTO) {
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (!userModelOptional.get().getPassword().equals(userRecordDTO.oldPassword())) {
@@ -58,6 +61,7 @@ public class UserController {
     @PutMapping("{userId}/image")
     public ResponseEntity<Object> updateImage(@PathVariable UUID userId,
                                              @RequestBody @JsonView(UserRecordDTO.UserView.ImagePut.class)
+                                             @Validated(UserRecordDTO.UserView.ImagePut.class)
                                              UserRecordDTO userRecordDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateImage(userRecordDTO, userService.findById(userId).get()));
     }

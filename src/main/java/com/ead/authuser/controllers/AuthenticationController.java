@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class AuthenticationController {
     @PostMapping("signup")
     public ResponseEntity<Object> registerUser(@RequestBody
                                                @JsonView(UserRecordDTO.UserView.RegistrationPost.class)
+                                               @Validated(UserRecordDTO.UserView.RegistrationPost.class)
                                                UserRecordDTO userRecordDTO) {
         if(userService.existsByUsername(userRecordDTO.username())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is already in use");
